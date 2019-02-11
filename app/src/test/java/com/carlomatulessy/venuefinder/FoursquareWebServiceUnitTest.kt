@@ -1,9 +1,8 @@
 package com.carlomatulessy.venuefinder
 
-import com.carlomatulessy.venuefinder.webservice.FoursquareAPICalls
+import com.carlomatulessy.venuefinder.webservice.FoursquareService
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 /**
  * Created by Carlo Matulessy on 11/02/2019.
@@ -12,20 +11,17 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class FoursquareWebServiceUnitTest {
 
     @Test
-    fun testWebservice() {
+    fun obtainVenuesFromInputUserTest() {
         // Arrange
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.foursquare.com")
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
+        val userInput= "Gorinchem"
+        val expectedResultListSize = 30
+        val callResponse = FoursquareService.instance.getVenueResults(userInput)
 
         // Act
-        val webservice = retrofit.create(FoursquareAPICalls::class.java)
-        val callResponse = webservice.getVenueResults("Gorinchem")
         val response = callResponse.execute()
         val result = response.body()?.response?.venues
 
         // Assert
-        checkNotNull(result)
+        assertEquals(expectedResultListSize, result?.size)
     }
 }
