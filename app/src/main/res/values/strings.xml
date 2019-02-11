@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">VenueFinder</string>
+
+    <string name="venue_search_hint">Fill in a city name</string>
+</resources>
