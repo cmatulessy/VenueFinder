@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.venue_list_item.view.*
  * Created by Carlo Matulessy on 11/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
  */
-class VenueFinderAdapter(private var results: ArrayList<Venue>) : RecyclerView.Adapter<VenueFinderAdapter.ViewHolder>() {
+class VenueFinderAdapter(private var results: List<Venue>) : RecyclerView.Adapter<VenueFinderAdapter.ViewHolder>() {
 
     class ViewHolder(rootView: View,
                      val venueName: TextView) : RecyclerView.ViewHolder(rootView)

@@ -1,14 +1,12 @@
 package com.carlomatulessy.venuefinder.view.venuefinder
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-
+import androidx.lifecycle.ViewModelProviders
 import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.viewmodel.VenueFinderViewModel
 import kotlinx.android.synthetic.main.venue_finder_fragment.*
@@ -41,13 +39,13 @@ class VenueFinderFragment : Fragment() {
             })
 
         venueSearchButton.setOnClickListener {
-            viewModel.getResultsFromValue(venueSearchField.text.toString())
+            viewModel.getResultsFromValue(this, venueSearchField.text.toString())
         }
     }
 
     // TODO binding
     private fun setVisibility(value: Boolean) {
-        if(value) {
+        if (value) {
             venueResultList.visibility = View.VISIBLE
             venueEmptyView.visibility = View.GONE
         } else {
