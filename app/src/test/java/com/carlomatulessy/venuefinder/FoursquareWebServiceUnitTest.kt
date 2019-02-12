@@ -14,11 +14,12 @@ class FoursquareWebServiceUnitTest {
     fun obtainVenuesFromInputUserTest() {
         // Arrange
         val userInput= "Gorinchem"
-        val expectedResultListSize = 30
-        val callResponse = FoursquareService.instance.getVenueResults(userInput)
+        val limit = 10
+        val radius = 1000
+        val expectedResultListSize = 10
 
         // Act
-        val response = callResponse.execute()
+        val response = FoursquareService.instance.getVenueResults(userInput, radius, limit).execute()
         val result = response.body()?.response?.venues
 
         // Assert

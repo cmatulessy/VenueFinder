@@ -24,6 +24,8 @@ interface FoursquareService {
 
     // TODO hide secrets
     @GET("/v2/venues/search?client_id=TY23JDLBXI5V4PS0BJE1GLHWRDYMJQ302TEQIEY2Y3M4C2KL&client_secret=WXVK1VECTKHC52NML15CMH1ZCVMWDY2Z3B2VB5RUUGKCMUDE&v=20190211")
-    fun getVenueResults(@Query("near") near: String): Call<FoursquareAPIResponse>
+    fun getVenueResults(@Query("near") near: String,
+                        @Query("radius") radius: Int,
+                        @Query("limit") limit: Int): Call<FoursquareAPIResponse>
 
 }

@@ -26,10 +26,11 @@ class VenueFinderViewModel : ViewModel() {
         venueNoResults.observe(fragment, venueNoResultsObserver)
     }
 
-    fun getResultsFromValue(fragment: Fragment, value: String) {
-        VenueRepository().getVenues(value).observe(fragment, Observer {
-            updateVenueResults(it, it.isNotEmpty())
-        })
+    fun getResultsFromValue(fragment: Fragment, value: String, radius: Int = 1000, limit: Int = 10) {
+        VenueRepository().getVenues(value, radius, limit)
+            .observe(fragment, Observer { result ->
+                updateVenueResults(result, result.isNotEmpty())
+            })
     }
 
     private fun updateVenueResults(results: List<Venue>, noResultsValue: Boolean) {

@@ -1,15 +1,18 @@
 package com.carlomatulessy.venuefinder.view.venuefinder
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.viewmodel.VenueFinderViewModel
 import kotlinx.android.synthetic.main.venue_finder_fragment.*
+
 
 class VenueFinderFragment : Fragment() {
 
@@ -23,7 +26,7 @@ class VenueFinderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.venue_finder_fragment, container, false)
+        return inflater.inflate(com.carlomatulessy.venuefinder.R.layout.venue_finder_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -31,15 +34,36 @@ class VenueFinderFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(VenueFinderViewModel::class.java)
 
         viewModel.setResultsObserver(this,
-            Observer {
-                venueResultList.adapter = VenueFinderAdapter(it)
+            Observer { data ->
+                context?.let { safeContext ->
+                    venueResultList.adapter = VenueFinderAdapter(safeContext, data)
+                }
             },
             Observer {
                 setVisibility(it)
             })
 
-        venueSearchButton.setOnClickListener {
-            viewModel.getResultsFromValue(this, venueSearchField.text.toString())
+        venueSearchField.apply {
+            setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    requestResultsFromInput(text.toString())
+                    closeKeyboard()
+                    true
+                } else
+                    false
+            }
+        }
+    }
+
+    private fun requestResultsFromInput(value: String) {
+        viewModel.getResultsFromValue(this, value)
+    }
+
+    private fun closeKeyboard() {
+        activity?.let {
+            venueSearchField.clearFocus()
+            (it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(venueSearchField.windowToken, 0)
         }
     }
 
