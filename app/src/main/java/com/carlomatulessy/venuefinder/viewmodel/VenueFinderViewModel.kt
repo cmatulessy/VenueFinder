@@ -33,6 +33,10 @@ class VenueFinderViewModel : ViewModel() {
             })
     }
 
+    fun resetResultsList() {
+        updateVenueResults(emptyList(), false)
+    }
+
     private fun updateVenueResults(results: List<Venue>, noResultsValue: Boolean) {
         venueResults.value = results
         venueNoResults.value = noResultsValue
