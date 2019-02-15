@@ -12,8 +12,12 @@
     <string name="venue_detail_address_format">%1$s</string>
     <string name="venue_detail_rating_title">Rating:</string>
     <string name="venue_detail_facebook">Facebook</string>
+    <string name="venue_detail_facebook_prefix">https://facebook.com/%1$s</string>
     <string name="venue_detail_twitter">Twitter</string>
+    <string name="venue_detail_twitter_prefix">https://twitter.com/%1$s</string>
     <string name="venue_detail_instagram">Instagram</string>
+    <string name="venue_detail_instagram_prefix">https://instagram.com/%1$s</string>
     <string name="venue_detail_call">Call venue</string>
+    <string name="venue_detail_call_prefix">tel:%1$s</string>
 
 </resources>

@@ -7,4 +7,5 @@ package com.carlomatulessy.venuefinder.util
 object Extra {
     const val VENUE_ID_KEY = "com.carlomatulessy.venuefinder.VENUE_ID_KEY"
     const val VENUE_NAME = "com.carlomatulessy.venuefinder.VENUE_NAME"
+    const val REQUEST_CALL_CODE = 911
 }
