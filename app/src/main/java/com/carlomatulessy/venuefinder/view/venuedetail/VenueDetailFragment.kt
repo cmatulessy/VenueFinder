@@ -14,10 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.model.Contact
 import com.carlomatulessy.venuefinder.model.Venue
 import com.carlomatulessy.venuefinder.util.Extra
 import com.carlomatulessy.venuefinder.viewmodel.VenueDetailViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.venue_detail_fragment.*
 
 
@@ -73,6 +75,13 @@ class VenueDetailFragment : Fragment() {
                 venueDetailAddress.text = safeVenue.location.formattedAddress.joinToString(",\n")
 
                 venueDetailRatingBar.rating = (safeVenue.rating / 5).toFloat()
+
+                safeVenue.bestPhoto?.let {
+                    Picasso
+                        .get()
+                        .load(getString(R.string.venue_detail_image_url, it.prefix, it.width, it.height, it.suffix))
+                        .into(venueDetailBestPhoto)
+                }
 
                 setupContactView(safeVenue.contact)
             }

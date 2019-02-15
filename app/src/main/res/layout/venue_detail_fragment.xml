@@ -6,114 +6,122 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/default_padding"
-        tools:context=".view.venuedetail.VenueDetailFragment">
-
-    <TextView
-            android:id="@+id/venueDetailTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/VenueFinder.Title"
-            tools:text="Centeral Park"/>
-
-    <TextView
-            android:id="@+id/venueDetailDescription"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/venue_detail_description_unknown"
-            app:layout_constraintTop_toBottomOf="@id/venueDetailTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/VenueFinder.Body"
-            tools:text="Central Park is the 843-acre green heart of Manhattan and is maintained by the Central Park Conservancy. It was designed in the 19th century by Frederick Law Olmsted and Calvert Vaux as an urban escape for New Yorkers, and now receives over 40 million visits per year."/>
+            android:padding="@dimen/default_padding"
+            tools:context=".view.venuedetail.VenueDetailFragment">
 
-    <TextView
-            android:id="@+id/venueDetailAddressTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/venue_detail_address"
-            android:layout_marginTop="@dimen/default_margin"
-            app:layout_constraintTop_toBottomOf="@id/venueDetailDescription"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/VenueFinder.Title"/>
+        <TextView
+                android:id="@+id/venueDetailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/VenueFinder.Title"
+                tools:text="Centeral Park"/>
 
-    <TextView
-            android:id="@+id/venueDetailAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/venue_detail_address_unknown"
-            app:layout_constraintTop_toBottomOf="@id/venueDetailAddressTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/VenueFinder.Body"
-            tools:text="59th St to 110th St (5th Ave to Central Park West),\nNew York, NY 10028,\nUnited States"/>
-
-    <TextView
-            android:id="@+id/venueDetailRatingTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/venue_detail_rating_title"
-            android:layout_marginTop="@dimen/default_margin"
-            app:layout_constraintTop_toBottomOf="@id/venueDetailAddress"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/VenueFinder.Title"/>
-
-    <RatingBar
-            android:id="@+id/venueDetailRatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:isIndicator="true"
-            android:numStars="5"
-            android:layout_marginTop="@dimen/default_small_margin"
-            app:layout_constraintTop_toBottomOf="@id/venueDetailRatingTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="283dp"
-            tools:layout_editor_absoluteX="16dp"/>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/default_margin"
-            app:layout_constraintTop_toBottomOf="@id/venueDetailRatingBar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-        <Button
-                android:id="@+id/venueDetailTwitterBtn"
+        <TextView
+                android:id="@+id/venueDetailDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/venue_detail_twitter"
-                android:visibility="gone"
-                tools:visibility="visible"/>
-        <Button
-                android:id="@+id/venueDetailInstagramBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/venue_detail_instagram"
-                android:visibility="gone"
-                tools:visibility="visible"/>
-        <Button
-                android:id="@+id/venueDetailFacebookBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/venue_detail_facebook"
-                android:visibility="gone"
-                tools:visibility="visible"/>
-        <Button
-                android:id="@+id/venueDetailCallBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/venue_detail_call"
-                android:visibility="gone"
-                tools:visibility="visible"/>
-    </LinearLayout>
+                android:text="@string/venue_detail_description_unknown"
+                app:layout_constraintTop_toBottomOf="@id/venueDetailTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/VenueFinder.Body"
+                tools:text="Central Park is the 843-acre green heart of Manhattan and is maintained by the Central Park Conservancy. It was designed in the 19th century by Frederick Law Olmsted and Calvert Vaux as an urban escape for New Yorkers, and now receives over 40 million visits per year."/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+                android:id="@+id/venueDetailAddressTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/venue_detail_address"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintTop_toBottomOf="@id/venueDetailDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/VenueFinder.Title"/>
+
+        <TextView
+                android:id="@+id/venueDetailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/venue_detail_address_unknown"
+                app:layout_constraintTop_toBottomOf="@id/venueDetailAddressTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/VenueFinder.Body"
+                tools:text="59th St to 110th St (5th Ave to Central Park West),\nNew York, NY 10028,\nUnited States"/>
+
+        <TextView
+                android:id="@+id/venueDetailRatingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/venue_detail_rating_title"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintTop_toBottomOf="@id/venueDetailAddress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/VenueFinder.Title"/>
+
+        <RatingBar
+                android:id="@+id/venueDetailRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:layout_marginTop="@dimen/default_small_margin"
+                app:layout_constraintTop_toBottomOf="@id/venueDetailRatingTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="283dp"
+                tools:layout_editor_absoluteX="16dp"/>
+
+        <ImageView
+                android:id="@+id/venueDetailBestPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/venueDetailRatingBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintTop_toBottomOf="@id/venueDetailBestPhoto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+            <Button
+                    android:id="@+id/venueDetailTwitterBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/venue_detail_twitter"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+            <Button
+                    android:id="@+id/venueDetailInstagramBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/venue_detail_instagram"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+            <Button
+                    android:id="@+id/venueDetailFacebookBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/venue_detail_facebook"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+            <Button
+                    android:id="@+id/venueDetailCallBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/venue_detail_call"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

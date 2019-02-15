@@ -18,7 +18,7 @@ interface FoursquareService {
     companion object {
         val instance: FoursquareService by lazy {
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://api.foursquare.com")
+                .baseUrl("https://api.foursquare.com/v2/venues/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
             retrofit.create(FoursquareService::class.java)
@@ -26,7 +26,7 @@ interface FoursquareService {
     }
 
     // TODO hide secrets + fix date
-    @GET("/v2/venues/search")
+    @GET("search")
     fun getVenueResults(
         @Query("near") near: String,
         @Query("radius") radius: Int,
@@ -36,7 +36,7 @@ interface FoursquareService {
         @Query("client_secret") clientSecret: String = BuildConfig.FS_Client_Secret
     ): Call<FoursquareAPIResponse>
 
-    @GET("/v2/venues/{venueId}")
+    @GET("{venueId}")
     fun getVenueDetails(
         @Path("venueId") id: String,
         @Query("v") version: Int = 20190211,
