@@ -13,11 +13,12 @@
     </style>
 
     <style name="VenueFinder.Title" parent="@style/TextAppearance.AppCompat.Title">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">26sp</item>
     </style>
 
     <style name="VenueFinder.Title.CardView" parent="@style/VenueFinder.Title">
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

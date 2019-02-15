@@ -22,6 +22,8 @@ android {
 
         debug {
             testCoverageEnabled true
+            buildConfigField 'String', "FS_Client_ID", foursquare_api_client_id
+            buildConfigField 'String', "FS_Client_Secret", foursquare_api_client_secret
         }
     }
 

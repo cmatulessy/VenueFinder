@@ -25,4 +25,18 @@ class FoursquareWebServiceUnitTest {
         // Assert
         assertEquals(expectedResultListSize, result?.size)
     }
+
+    @Test
+    fun obtainVenueDetailsFromIdTest() {
+        // Arrange
+        val venueId = "4b0fcd76f964a5200a6523e3"
+        val expectedName = "UvA P.C. Hoofthuis"
+
+        // Act
+        val response = FoursquareService.instance.getVenueDetails(venueId).execute()
+        val result = response.body()?.response?.venue
+
+        // Assert
+        assertEquals(expectedName, result?.name)
+    }
 }

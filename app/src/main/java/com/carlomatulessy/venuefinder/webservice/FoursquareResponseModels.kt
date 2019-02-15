@@ -10,4 +10,18 @@ class FoursquareAPIResponse(val meta: FoursquareMeta, val response: FoursquareRe
 
 class FoursquareMeta(val code: Int, val requestId: String)
 
-class FoursquareResponse(val venues: List<Venue>)
+class FoursquareResponse {
+    val venue: Venue
+    val venues: List<Venue>
+
+    constructor(venueList: List<Venue>) {
+        venues = venueList
+        venue = venueList.first()
+    }
+
+    constructor(venue: Venue) {
+        this.venue = venue
+        venues = listOf(venue)
+    }
+
+}

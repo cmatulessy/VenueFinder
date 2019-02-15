@@ -16,20 +16,43 @@ import retrofit2.Response
  */
 class VenueRepository {
 
+    // TODO change data to Response object to pass back to get to server code errors
+
     fun getVenues(value: String, radius: Int, limit: Int): LiveData<List<Venue>> {
         val data = MutableLiveData<List<Venue>>()
 
-        FoursquareService.instance.getVenueResults(value, radius, limit).enqueue(object: Callback<FoursquareAPIResponse>{
+        FoursquareService.instance.getVenueResults(value, radius, limit)
+            .enqueue(object : Callback<FoursquareAPIResponse> {
+
+                override fun onResponse(call: Call<FoursquareAPIResponse>, response: Response<FoursquareAPIResponse>) {
+                    response.body()?.response?.venues?.let {
+                        data.value = it
+                    }
+                }
+
+                override fun onFailure(call: Call<FoursquareAPIResponse>, t: Throwable) {
+                    // TODO show cached result
+                    data.value = emptyList()
+                }
+            })
+
+        return data
+    }
+
+    fun getVenueDetails(id: String): LiveData<Venue> {
+        val data = MutableLiveData<Venue>()
+
+        FoursquareService.instance.getVenueDetails(id).enqueue(object : Callback<FoursquareAPIResponse> {
 
             override fun onResponse(call: Call<FoursquareAPIResponse>, response: Response<FoursquareAPIResponse>) {
-                response.body()?.response?.venues?.let {
-                    data.value = it
-                }
+
+                data.value = response.body()?.response?.venue
+                Log.d("TEST", "RESPONSE: "+response.body()?.response?.venue.toString())
             }
 
             override fun onFailure(call: Call<FoursquareAPIResponse>, t: Throwable) {
                 // TODO show cached result
-                data.value = emptyList()
+                data.value = null
             }
         })
 

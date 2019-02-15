@@ -19,7 +19,22 @@
             android:layout_margin="@dimen/default_small_margin"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@id/venueProgressBar"/>
+
+    <ProgressBar
+            android:id="@+id/venueProgressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/default_small_margin"
+            android:progressDrawable="@drawable/circle_progress_bar"
+            android:indeterminate="false"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/venueSearchField"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:max="100"
+            tools:progress="60"
+            tools:visibility="visible"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/venueResultList"
@@ -34,7 +49,7 @@
     <TextView android:id="@+id/venueEmptyView"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="No Results"
+              android:text="@string/venue_search_no_results"
               android:textSize="40sp"
               app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintStart_toStartOf="parent"

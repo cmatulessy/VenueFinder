@@ -5,6 +5,10 @@ package com.carlomatulessy.venuefinder.model
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
  */
 data class Venue(
+    val id: String,
     val name: String,
-    val location: Location
+    val description: String,
+    val contact: Contact,
+    val location: Location,
+    val rating: Int
 )

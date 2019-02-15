@@ -11,6 +11,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.carlomatulessy.venuefinder.R
+import com.carlomatulessy.venuefinder.model.Venue
+import com.carlomatulessy.venuefinder.view.venuedetail.VenueDetailFragment
 import com.carlomatulessy.venuefinder.viewmodel.VenueFinderViewModel
 import kotlinx.android.synthetic.main.venue_finder_fragment.*
 
@@ -23,25 +26,24 @@ class VenueFinderFragment : Fragment() {
 
     private lateinit var viewModel: VenueFinderViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(com.carlomatulessy.venuefinder.R.layout.venue_finder_fragment, container, false)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        viewModel = ViewModelProviders.of(this).get(VenueFinderViewModel::class.java)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(VenueFinderViewModel::class.java)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.venue_finder_fragment, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.setResultsObserver(this,
             Observer { data ->
-                context?.let { safeContext ->
-                    venueResultList.adapter = VenueFinderAdapter(safeContext, data)
-                }
+                setVenueResults(data)
             },
-            Observer {
-                setVisibility(it)
+            Observer { setVisibility(it) },
+            Observer { isInProgress ->
+                venueProgressBar.visibility = if (isInProgress) View.VISIBLE else View.GONE
             })
 
         venueSearchField.apply {
@@ -53,15 +55,29 @@ class VenueFinderFragment : Fragment() {
                 } else
                     false
             }
-
-            addTextChangedListener {
-                viewModel.resetResultsList()
-            }
         }
+
+        viewModel.restoreDataIfNecessary()
     }
 
     private fun requestResultsFromInput(value: String) {
         viewModel.getResultsFromValue(this, value)
+    }
+
+    private fun setVenueResults(data: List<Venue>) {
+        activity?.let { safeActivity ->
+            venueResultList.adapter = VenueFinderAdapter(
+                safeActivity, data,
+                object : VenueFinderAdapter.VenueSelectionListener {
+                    override fun onVenueSelected(venue: Venue) {
+                        safeActivity.supportFragmentManager.beginTransaction().apply {
+                            replace(R.id.fragmentContainer, VenueDetailFragment.newInstance(venue))
+                            addToBackStack(null)
+                            commit()
+                        }
+                    }
+                })
+        }
     }
 
     private fun closeKeyboard() {

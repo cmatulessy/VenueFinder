@@ -9,6 +9,8 @@ import com.carlomatulessy.venuefinder.repository.VenueRepository
 
 class VenueFinderViewModel : ViewModel() {
 
+    private lateinit var venueResultList: List<Venue>
+
     private val venueResults: MutableLiveData<List<Venue>> by lazy {
         MutableLiveData<List<Venue>>()
     }
@@ -17,18 +19,32 @@ class VenueFinderViewModel : ViewModel() {
         MutableLiveData<Boolean>()
     }
 
+    private val venueProgress: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    fun restoreDataIfNecessary() {
+        if(::venueResultList.isInitialized)
+            updateVenueResults(venueResultList, true)
+    }
+
     fun setResultsObserver(
         fragment: Fragment,
         venueResultsObserver: Observer<List<Venue>>,
-        venueNoResultsObserver: Observer<Boolean>
+        venueNoResultsObserver: Observer<Boolean>,
+        venueProgressObserver: Observer<Boolean>
     ) {
         venueResults.observe(fragment, venueResultsObserver)
         venueNoResults.observe(fragment, venueNoResultsObserver)
+        venueProgress.observe(fragment, venueProgressObserver)
     }
 
-    fun getResultsFromValue(fragment: Fragment, value: String, radius: Int = 1000, limit: Int = 10) {
+    fun getResultsFromValue(fragment: Fragment,
+                            value: String, radius: Int = 1000, limit: Int = 10) {
+        venueProgress.value = true
         VenueRepository().getVenues(value, radius, limit)
             .observe(fragment, Observer { result ->
+                venueResultList = result
                 updateVenueResults(result, result.isNotEmpty())
             })
     }
@@ -37,8 +53,9 @@ class VenueFinderViewModel : ViewModel() {
         updateVenueResults(emptyList(), false)
     }
 
-    private fun updateVenueResults(results: List<Venue>, noResultsValue: Boolean) {
+    private fun updateVenueResults(results: List<Venue>, hasResults: Boolean) {
         venueResults.value = results
-        venueNoResults.value = noResultsValue
+        venueNoResults.value = hasResults
+        venueProgress.value = false
     }
 }
