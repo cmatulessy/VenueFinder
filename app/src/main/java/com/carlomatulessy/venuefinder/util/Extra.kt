@@ -5,6 +5,7 @@ package com.carlomatulessy.venuefinder.util
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
  */
 object Extra {
+    const val VENUE_FINDER_KEY = "com.carlomatulessy.venuefinder.VENUE_FINDER_KEY"
     const val VENUE_ID_KEY = "com.carlomatulessy.venuefinder.VENUE_ID_KEY"
     const val VENUE_NAME = "com.carlomatulessy.venuefinder.VENUE_NAME"
     const val REQUEST_CALL_CODE = 911

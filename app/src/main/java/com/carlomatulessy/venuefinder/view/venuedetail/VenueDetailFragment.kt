@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.carlomatulessy.venuefinder.model.Contact
 import com.carlomatulessy.venuefinder.model.Venue
 import com.carlomatulessy.venuefinder.util.Extra
 import com.carlomatulessy.venuefinder.viewmodel.VenueDetailViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.venue_detail_fragment.*
 
@@ -63,29 +65,43 @@ class VenueDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getVenueDetails(venueId).observe(this, Observer { result ->
-            result?.let { safeVenue ->
-                venueDetailTitle.text =
-                    if (safeVenue.name.isNotEmpty()) safeVenue.name else venueName
+        viewModel.getVenueDetails(venueId).observe(this,
+            Observer { result ->
+                result?.let { message ->
+                    if (message.meta.code == 200) {
+                        message.response?.venue?.let { safeVenue ->
+                            venueDetailTitle.text =
+                                if (safeVenue.name.isNotEmpty()) safeVenue.name else venueName
 
-                venueDetailDescription.text =
-                    if (safeVenue.description.isNullOrEmpty()) getString(com.carlomatulessy.venuefinder.R.string.venue_detail_description_unknown)
-                    else safeVenue.description
+                            venueDetailDescription.text =
+                                if (safeVenue.description.isNullOrEmpty())
+                                    getString(com.carlomatulessy.venuefinder.R.string.venue_detail_description_unknown)
+                                else
+                                    safeVenue.description
 
-                venueDetailAddress.text = safeVenue.location.formattedAddress.joinToString(",\n")
+                            venueDetailAddress.text = safeVenue.location.formattedAddress.joinToString(",\n")
 
-                venueDetailRatingBar.rating = (safeVenue.rating / 5).toFloat()
+                            venueDetailRatingBar.rating = (safeVenue.rating / 5).toFloat()
 
-                safeVenue.bestPhoto?.let {
-                    Picasso
-                        .get()
-                        .load(getString(R.string.venue_detail_image_url, it.prefix, it.width, it.height, it.suffix))
-                        .into(venueDetailBestPhoto)
-                }
+                            safeVenue.bestPhoto?.let {
+                                Picasso.get().load(
+                                    getString(
+                                        R.string.venue_detail_image_url,
+                                        it.prefix,
+                                        it.width,
+                                        it.height,
+                                        it.suffix
+                                    )
+                                ).into(venueDetailBestPhoto)
+                            }
 
-                setupContactView(safeVenue.contact)
-            }
-        })
+                            setupContactView(safeVenue.contact)
+                        }
+                    } else {
+                        showErrorMessage(message.meta.code)
+                    }
+                } ?: showErrorMessage(429)
+            })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -93,6 +109,17 @@ class VenueDetailFragment : Fragment() {
             Extra.REQUEST_CALL_CODE -> {
 
             }
+        }
+    }
+
+    private fun showErrorMessage(code: Int) {
+        activity?.let { safeFragment ->
+            Toast.makeText(
+                safeFragment,
+                getString(R.string.venue_detail_connection_error, code), Toast.LENGTH_SHORT
+            )
+                .show()
+            safeFragment.onBackPressed()
         }
     }
 

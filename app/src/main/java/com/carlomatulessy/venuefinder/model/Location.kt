@@ -5,11 +5,8 @@ package com.carlomatulessy.venuefinder.model
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
  */
 class Location(
-    val address: String,
-    val postalCode: String,
     val cc: String,
     val city: String,
     val state: String,
-    val country: String,
     val formattedAddress: Array<String>
 )

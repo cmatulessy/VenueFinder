@@ -20,5 +20,5 @@
     <string name="venue_detail_call">Call venue</string>
     <string name="venue_detail_call_prefix">tel:%1$s</string>
     <string name="venue_detail_image_url">%1$s%2$dx%3$d%4$s</string>
-
+    <string name="venue_detail_connection_error">Something went wrong: Code %1$d</string>
 </resources>

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.carlomatulessy.venuefinder.model.Venue
+import com.carlomatulessy.venuefinder.util.Extra.VENUE_FINDER_KEY
 import com.carlomatulessy.venuefinder.webservice.FoursquareAPIResponse
 import com.carlomatulessy.venuefinder.webservice.FoursquareService
 import retrofit2.Call
@@ -15,8 +16,6 @@ import retrofit2.Response
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
  */
 class VenueRepository {
-
-    // TODO change data to Response object to pass back to get to server code errors
 
     fun getVenues(value: String, radius: Int, limit: Int): LiveData<List<Venue>> {
         val data = MutableLiveData<List<Venue>>()
@@ -33,25 +32,25 @@ class VenueRepository {
                 override fun onFailure(call: Call<FoursquareAPIResponse>, t: Throwable) {
                     // TODO show cached result
                     data.value = emptyList()
+                    Log.e(VENUE_FINDER_KEY, "Venues onFailure: "+t.message)
                 }
             })
 
         return data
     }
 
-    fun getVenueDetails(id: String): LiveData<Venue> {
-        val data = MutableLiveData<Venue>()
+    fun getVenueDetails(id: String): LiveData<FoursquareAPIResponse> {
+        val data = MutableLiveData<FoursquareAPIResponse>()
 
         FoursquareService.instance.getVenueDetails(id).enqueue(object : Callback<FoursquareAPIResponse> {
 
             override fun onResponse(call: Call<FoursquareAPIResponse>, response: Response<FoursquareAPIResponse>) {
-
-                data.value = response.body()?.response?.venue
-                Log.d("TEST", "RESPONSE: "+response.body()?.response?.venue.toString())
+                // TODO show cached result
+                data.value = response.body()
             }
 
             override fun onFailure(call: Call<FoursquareAPIResponse>, t: Throwable) {
-                // TODO show cached result
+                Log.e(VENUE_FINDER_KEY, "Venue details onFailure: "+t.message)
                 data.value = null
             }
         })
