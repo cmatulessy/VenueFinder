@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.carlomatulessy.venuefinder.R
-import com.carlomatulessy.venuefinder.model.Venue
+import com.carlomatulessy.venuefinder.database.VenueResult
+import com.carlomatulessy.venuefinder.webservice.model.Venue
 import kotlinx.android.synthetic.main.venue_list_item.view.*
 
 /**
@@ -16,12 +17,12 @@ import kotlinx.android.synthetic.main.venue_list_item.view.*
  */
 class VenueFinderAdapter(
     private val context: Context,
-    private var results: List<Venue>,
+    private var results: List<VenueResult>,
     private val listener: VenueSelectionListener
 ) : RecyclerView.Adapter<VenueFinderAdapter.ViewHolder>() {
 
     interface VenueSelectionListener {
-        fun onVenueSelected(venue: Venue)
+        fun onVenueSelected(venueResult: VenueResult)
     }
 
     class ViewHolder(
@@ -42,7 +43,7 @@ class VenueFinderAdapter(
             holder.venueName.text = venue.name
             holder.venueLocationCity.text = context.getString(
                 R.string.venue_location_list_item,
-                venue.location.city, venue.location.state, venue.location.cc
+                venue.locationCity, venue.locationState, venue.locationCC
             )
 
             holder.rootView.setOnClickListener { listener.onVenueSelected(venue) }

@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.carlomatulessy.venuefinder.model.Venue
 
 /**
  * Created by Carlo Matulessy on 15/02/2019.
@@ -13,8 +12,8 @@ import com.carlomatulessy.venuefinder.model.Venue
 @Dao
 interface VenueDetailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(venueResult: VenueTable)
+    fun insert(venueResult: VenueDetailResult)
 
-    @Query("SELECT * FROM venueTable  WHERE id = :id ")
-    fun getVenueDetail(id: String): VenueTable
+    @Query("SELECT * FROM venueDetailResult  WHERE id = :id ")
+    fun getVenueDetail(id: String): VenueDetailResult
 }

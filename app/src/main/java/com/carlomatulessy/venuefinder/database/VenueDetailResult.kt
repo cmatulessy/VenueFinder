@@ -3,16 +3,14 @@ package com.carlomatulessy.venuefinder.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.net.Inet4Address
 
 /**
- * Created by Carlo Matulessy on 15/02/2019.
+ * Created by Carlo Matulessy on 16/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
  */
 @Entity
-data class VenueTable(
+data class VenueDetailResult(
     @PrimaryKey val id: String,
-    @ColumnInfo(name = "requestId") val requestId: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "rating") val rating: Int,

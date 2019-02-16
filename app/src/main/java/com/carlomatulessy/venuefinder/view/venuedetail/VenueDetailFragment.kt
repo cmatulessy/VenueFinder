@@ -16,11 +16,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.carlomatulessy.venuefinder.R
-import com.carlomatulessy.venuefinder.model.Contact
-import com.carlomatulessy.venuefinder.model.Venue
+import com.carlomatulessy.venuefinder.database.VenueResult
+import com.carlomatulessy.venuefinder.webservice.model.Contact
+import com.carlomatulessy.venuefinder.webservice.model.Venue
 import com.carlomatulessy.venuefinder.util.Extra
 import com.carlomatulessy.venuefinder.viewmodel.VenueDetailViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.venue_detail_fragment.*
 
@@ -31,11 +31,11 @@ class VenueDetailFragment : Fragment() {
     private lateinit var venueName: String
 
     companion object {
-        fun newInstance(venue: Venue): VenueDetailFragment {
+        fun newInstance(venueResult: VenueResult): VenueDetailFragment {
             val frag = VenueDetailFragment()
             val bundle = Bundle()
-            bundle.putString(Extra.VENUE_ID_KEY, venue.id)
-            bundle.putString(Extra.VENUE_NAME, venue.name)
+            bundle.putString(Extra.VENUE_ID_KEY, venueResult.id)
+            bundle.putString(Extra.VENUE_NAME, venueResult.name)
             frag.arguments = bundle
             return frag
         }
@@ -65,6 +65,7 @@ class VenueDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // TODO big refactor here!
         viewModel.getVenueDetails(venueId).observe(this,
             Observer { result ->
                 result?.let { message ->

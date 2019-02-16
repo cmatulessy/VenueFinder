@@ -1,4 +1,4 @@
-package com.carlomatulessy.venuefinder.model
+package com.carlomatulessy.venuefinder.webservice.model
 
 /**
  * Created by Carlo Matulessy on 14/02/2019.

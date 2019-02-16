@@ -1,6 +1,6 @@
 package com.carlomatulessy.venuefinder.webservice
 
-import com.carlomatulessy.venuefinder.model.Venue
+import com.carlomatulessy.venuefinder.webservice.model.Venue
 
 /**
  * Created by Carlo Matulessy on 11/02/2019.

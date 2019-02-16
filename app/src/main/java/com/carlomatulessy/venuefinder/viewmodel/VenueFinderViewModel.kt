@@ -4,15 +4,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.carlomatulessy.venuefinder.model.Venue
+import com.carlomatulessy.venuefinder.database.VenueResult
+import com.carlomatulessy.venuefinder.webservice.model.Venue
 import com.carlomatulessy.venuefinder.repository.VenueRepository
 
 class VenueFinderViewModel : ViewModel() {
 
-    private lateinit var venueResultList: List<Venue>
+    private lateinit var venueResultList: List<VenueResult>
 
-    private val venueResults: MutableLiveData<List<Venue>> by lazy {
-        MutableLiveData<List<Venue>>()
+    private val venueResults: MutableLiveData<List<VenueResult>> by lazy {
+        MutableLiveData<List<VenueResult>>()
     }
 
     private val venueNoResults: MutableLiveData<Boolean> by lazy {
@@ -30,7 +31,7 @@ class VenueFinderViewModel : ViewModel() {
 
     fun setResultsObserver(
         fragment: Fragment,
-        venueResultsObserver: Observer<List<Venue>>,
+        venueResultsObserver: Observer<List<VenueResult>>,
         venueNoResultsObserver: Observer<Boolean>,
         venueProgressObserver: Observer<Boolean>
     ) {
@@ -42,18 +43,18 @@ class VenueFinderViewModel : ViewModel() {
     fun getResultsFromValue(fragment: Fragment,
                             value: String, radius: Int = 1000, limit: Int = 10) {
         venueProgress.value = true
-        VenueRepository().getVenues(value, radius, limit)
-            .observe(fragment, Observer { result ->
-                venueResultList = result
-                updateVenueResults(result, result.isNotEmpty())
-            })
+        fragment.context?.let { safeContext ->
+            VenueRepository().getVenues(safeContext, value, radius, limit)
+                .observe(fragment, Observer { result ->
+                    result?.let {
+                        venueResultList = result
+                        updateVenueResults(result, result.isNotEmpty())
+                    }
+                })
+        }
     }
 
-    fun resetResultsList() {
-        updateVenueResults(emptyList(), false)
-    }
-
-    private fun updateVenueResults(results: List<Venue>, hasResults: Boolean) {
+    private fun updateVenueResults(results: List<VenueResult>, hasResults: Boolean) {
         venueResults.value = results
         venueNoResults.value = hasResults
         venueProgress.value = false

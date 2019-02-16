@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.carlomatulessy.venuefinder.model.Venue
 
 /**
  * Created by Carlo Matulessy on 15/02/2019.
@@ -15,11 +14,11 @@ import com.carlomatulessy.venuefinder.model.Venue
 interface VenueResultsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(venueResult: VenueTable)
+    fun insert(venueResult: VenueResult): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(venueResults: List<VenueTable>)
+    @Query("SELECT * FROM venueResult WHERE requestId = :requestId")
+    fun getVenueResultsForRequestId(requestId: String): LiveData<List<VenueResult>>
 
-    @Query("SELECT * FROM venueTable WHERE requestId = :requestId")
-    fun getVenueResultsFor(requestId: String): LiveData<List<VenueTable>>
+    @Query("SELECT * FROM VenueResult WHERE search_value = :value")
+    fun getVenueResultsForSearchValue(value: String): LiveData<List<VenueResult>>
 }
