@@ -49,12 +49,14 @@ open class VenueResultInsertTask(
             )
         }
 
+        Log.d(VENUE_FINDER_KEY, "requestId: ${apiResponse.meta.requestId}")
         return venueResultsDao.getVenueResultsForRequestId(apiResponse.meta.requestId)
     }
 
     override fun onPostExecute(results: LiveData<List<VenueResult>>?) {
         super.onPostExecute(results)
         results?.let {
+            Log.d(VENUE_FINDER_KEY, "Result: ${it.value}")
             listener?.onInserted(it)
         } ?: run {
             listener?.onInsertionError()
