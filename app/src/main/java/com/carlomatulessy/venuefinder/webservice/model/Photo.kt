@@ -11,3 +11,7 @@ data class Photo(
     val height: Int,
     val visibility: String
 )
+
+enum class PhotoEnum {
+    PREFIX, SUFFIX, WIDTH, HEIGHT, VISIBILITY
+}

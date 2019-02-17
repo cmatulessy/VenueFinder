@@ -5,7 +5,7 @@
     <string name="venue_search_no_results">No results</string>
     <string name="venue_location_list_item">%1$s, %2$s, %3$s</string>
 
-    <string name="venue_detail_title_unknown">No data to show</string>
+    <string name="venue_detail_title_unknown">No data in cache</string>
     <string name="venue_detail_description_unknown">No description available</string>
     <string name="venue_detail_address">Address:</string>
     <string name="venue_detail_address_unknown">Address unknown</string>
