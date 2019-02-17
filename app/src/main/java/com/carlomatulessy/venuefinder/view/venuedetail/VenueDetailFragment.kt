@@ -17,8 +17,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.database.VenueDetailResult
 import com.carlomatulessy.venuefinder.database.VenueResult
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_DETAIL_FACEBOOK_BTN
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_DETAIL_INSTAGRAM_BTN
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_DETAIL_PHONE_BTN
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_DETAIL_SCREEN
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_DETAIL_TWITTER_BTN
 import com.carlomatulessy.venuefinder.util.Extra
 import com.carlomatulessy.venuefinder.viewmodel.VenueDetailViewModel
+import com.microsoft.appcenter.analytics.Analytics
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.venue_detail_fragment.*
 
@@ -67,6 +73,7 @@ class VenueDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Analytics.trackEvent(ANALYTICS_VENUE_DETAIL_SCREEN)
 
         viewModel.setVenueDetailsObserver(this,
             Observer { venueDetailResult ->
@@ -98,6 +105,7 @@ class VenueDetailFragment : Fragment() {
             visibility = getVisibility(venueDetailResult.contactTwitter)
             setOnClickListener {
                 goToUrl(getString(R.string.venue_detail_twitter_prefix, venueDetailResult.contactTwitter))
+                Analytics.trackEvent(ANALYTICS_VENUE_DETAIL_TWITTER_BTN)
             }
         }
 
@@ -105,6 +113,7 @@ class VenueDetailFragment : Fragment() {
             visibility = getVisibility(venueDetailResult.contactInstagram)
             setOnClickListener {
                 goToUrl(getString(R.string.venue_detail_instagram_prefix, venueDetailResult.contactInstagram))
+                Analytics.trackEvent(ANALYTICS_VENUE_DETAIL_INSTAGRAM_BTN)
             }
         }
 
@@ -112,12 +121,14 @@ class VenueDetailFragment : Fragment() {
             visibility = getVisibility(venueDetailResult.contactFacebook)
             setOnClickListener {
                 goToUrl(getString(R.string.venue_detail_facebook_prefix, venueDetailResult.contactFacebook))
+                Analytics.trackEvent(ANALYTICS_VENUE_DETAIL_FACEBOOK_BTN)
             }
         }
 
         venueDetailCallBtn.apply {
             visibility = getVisibility(venueDetailResult.contactPhone)
             setOnClickListener {
+                Analytics.trackEvent(ANALYTICS_VENUE_DETAIL_PHONE_BTN)
                 val permissionCheck = ContextCompat.checkSelfPermission(it.context, Manifest.permission.CALL_PHONE)
 
                 if (permissionCheck != PackageManager.PERMISSION_GRANTED) {

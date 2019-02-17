@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import com.carlomatulessy.venuefinder.BuildConfig
 import com.carlomatulessy.venuefinder.view.venuefinder.VenueFinderFragment
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 
 /**
  * Created by Carlo Matulessy on 11/02/2019.
@@ -19,6 +23,10 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
         setContentView(com.carlomatulessy.venuefinder.R.layout.activity_main)
         supportFragmentManager.addOnBackStackChangedListener(this)
         shouldDisplayHomeUp()
+
+        // Setup App Center SDK
+        AppCenter.start(application, BuildConfig.APPCENTER_API_KEY,
+            Analytics::class.java, Crashes::class.java)
 
         supportFragmentManager.beginTransaction().apply {
             replace(com.carlomatulessy.venuefinder.R.id.fragmentContainer, VenueFinderFragment.newInstance())

@@ -17,12 +17,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "APPCENTER_API_KEY", appcenter_api_key
         }
 
         debug {
             testCoverageEnabled true
             buildConfigField 'String', "FS_Client_ID", foursquare_api_client_id
             buildConfigField 'String', "FS_Client_Secret", foursquare_api_client_secret
+            buildConfigField 'String', "APPCENTER_API_KEY", appcenter_api_key
         }
     }
 
@@ -62,4 +64,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
+
+    // Microsoft AppCenter
+    implementation "com.microsoft.appcenter:appcenter-analytics:${app_center_sdk_version}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${app_center_sdk_version}"
 }

@@ -12,8 +12,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.database.VenueResult
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_SEARCH_COMMAND
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_SEARCH_HEADER
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_SEARCH_SCREEN
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_SEARCH_SELECTED_VENUE
+import com.carlomatulessy.venuefinder.util.Analytics.ANALYTICS_VENUE_SEARCH_SELECTED_VENUE_HEADER
 import com.carlomatulessy.venuefinder.view.venuedetail.VenueDetailFragment
 import com.carlomatulessy.venuefinder.viewmodel.VenueFinderViewModel
+import com.microsoft.appcenter.analytics.Analytics
 import kotlinx.android.synthetic.main.venue_finder_fragment.*
 
 /**
@@ -40,6 +46,7 @@ class VenueFinderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Analytics.trackEvent(ANALYTICS_VENUE_SEARCH_SCREEN)
 
         viewModel.setResultsObserver(this,
             Observer { data ->
@@ -53,6 +60,9 @@ class VenueFinderFragment : Fragment() {
         venueSearchField.apply {
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Analytics.trackEvent(ANALYTICS_VENUE_SEARCH_COMMAND,
+                        hashMapOf(ANALYTICS_VENUE_SEARCH_HEADER to text.toString()))
+
                     requestResultsFromInput(text.toString())
                     closeKeyboard()
                     true
@@ -74,6 +84,9 @@ class VenueFinderFragment : Fragment() {
                 safeActivity, data,
                 object : VenueFinderAdapter.VenueSelectionListener {
                     override fun onVenueSelected(venueResult: VenueResult) {
+                        Analytics.trackEvent(ANALYTICS_VENUE_SEARCH_SELECTED_VENUE,
+                            hashMapOf(ANALYTICS_VENUE_SEARCH_SELECTED_VENUE_HEADER to venueResult.name))
+
                         safeActivity.supportFragmentManager.beginTransaction().apply {
                             replace(R.id.fragmentContainer, VenueDetailFragment.newInstance(venueResult))
                             addToBackStack(null)
