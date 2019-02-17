@@ -1,4 +1,4 @@
-package com.carlomatulessy.venuefinder
+package com.carlomatulessy.venuefinder.instrumentedTests
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
