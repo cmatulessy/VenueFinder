@@ -13,17 +13,23 @@ import com.carlomatulessy.venuefinder.webservice.FoursquareAPIResponse
 import com.carlomatulessy.venuefinder.webservice.FoursquareService
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 
 /**
  * Created by Carlo Matulessy on 12/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This class is responsible for managing the data. It determines if the data comes from an HTTP request
+ * or from the database itself. If there is no internet connection, it will look for cached data. If it can't find it,
+ * it will return an empty list
+ *
  */
 class VenueRepository {
 
-    fun getVenues(fragment: Fragment, value: String, radius: Int, limit: Int): MutableLiveData<List<VenueResult>> {
+    fun getVenues(context: Context, value: String, radius: Int, limit: Int): MutableLiveData<List<VenueResult>> {
         val data = MutableLiveData<List<VenueResult>>()
-        fragment.context?.let { safeContext ->
             FoursquareService.instance.getVenueResults(value, radius, limit).enqueue(
                 object : Callback<FoursquareAPIResponse> {
 
@@ -33,9 +39,9 @@ class VenueRepository {
                     ) {
                         Log.d(VENUE_FINDER_KEY, "RetroFit response code: ${response.code()}")
 
-                        if (response.code() == 200) {
+                        if (response.code() == 2100) {
                             response.body()?.let { apiResponse ->
-                                VenueResultInsertTask(safeContext, value, apiResponse,
+                                VenueResultInsertTask(context, value, apiResponse,
                                     object : VenueResultInsertTask.InsertListener {
 
                                         override fun onInserted(results: List<VenueResult>) {
@@ -53,16 +59,27 @@ class VenueRepository {
                                     }).execute()
                             }
                         } else {
-                            getCachedDataForVenueResults(safeContext, value).observe(fragment, Observer {
-                                data.value = it
-                            })
+                            onFailure(call, IOException())
                         }
                     }
 
                     override fun onFailure(call: Call<FoursquareAPIResponse>, t: Throwable) {
-                        getCachedDataForVenueResults(safeContext, value).observe(fragment, Observer {
-                            data.value = it
-                        })
+                        VenueResultCachedDataTask(context, value,
+                            object : VenueResultCachedDataTask.ObtainCacheListener {
+
+                                override fun onObtainedResults(results: List<VenueResult>) {
+                                    Log.d(VENUE_FINDER_KEY, "VenueRepository | onFailure(): Obtain data from cache")
+                                    data.value = results
+                                }
+
+                                override fun onObtainedError() {
+                                    super.onObtainedError()
+                                    Log.e(
+                                        VENUE_FINDER_KEY,
+                                        "VenueRepository | onFailure(): Something went wrong with VenueResultCachedDataTask"
+                                    )
+                                }
+                            }).execute()
 
                         Log.e(
                             VENUE_FINDER_KEY,
@@ -71,7 +88,6 @@ class VenueRepository {
                     }
                 }
             )
-        }
 
         return data
     }
@@ -91,29 +107,6 @@ class VenueRepository {
                 data.value = null
             }
         })
-
-        return data
-    }
-
-    private fun getCachedDataForVenueResults(context: Context, value: String): MutableLiveData<List<VenueResult>> {
-        val data = MutableLiveData<List<VenueResult>>()
-
-        VenueResultCachedDataTask(context, value,
-            object : VenueResultCachedDataTask.ObtainCacheListener {
-
-                override fun onObtainedResults(results: List<VenueResult>) {
-                    data.value = results
-                    Log.d(VENUE_FINDER_KEY, "VenueRepository: Obtain data from cache")
-                }
-
-                override fun onObtainedError() {
-                    super.onObtainedError()
-                    Log.e(
-                        VENUE_FINDER_KEY,
-                        "VenueRepository: Something went wrong with VenueResultCachedDataTask"
-                    )
-                }
-            }).execute()
 
         return data
     }

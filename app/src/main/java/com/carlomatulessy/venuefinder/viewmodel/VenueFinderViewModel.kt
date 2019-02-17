@@ -8,6 +8,12 @@ import com.carlomatulessy.venuefinder.database.VenueResult
 import com.carlomatulessy.venuefinder.webservice.model.Venue
 import com.carlomatulessy.venuefinder.repository.VenueRepository
 
+/**
+ * Created by Carlo Matulessy on 16/02/2019.
+ * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This viewmodel handles the data binding with the view and repository
+ */
 class VenueFinderViewModel : ViewModel() {
 
     private lateinit var venueResultList: List<VenueResult>
@@ -43,13 +49,15 @@ class VenueFinderViewModel : ViewModel() {
     fun getResultsFromValue(fragment: Fragment,
                             value: String, radius: Int = 1000, limit: Int = 10) {
         venueProgress.value = true
-        VenueRepository().getVenues(fragment, value, radius, limit)
-            .observe(fragment, Observer { results ->
-                results?.let {
-                    venueResultList = results
-                    updateVenueResults(results, results.isNotEmpty())
-                }
-            })
+        fragment.context?.let { safeContext ->
+            VenueRepository().getVenues(safeContext, value, radius, limit)
+                .observe(fragment, Observer { result ->
+                    result?.let {
+                        venueResultList = result
+                        updateVenueResults(result, result.isNotEmpty())
+                    }
+                })
+        }
     }
 
     private fun updateVenueResults(results: List<VenueResult>, hasResults: Boolean) {
