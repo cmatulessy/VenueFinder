@@ -17,6 +17,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "FS_Client_ID", foursquare_api_client_id
+            buildConfigField 'String', "FS_Client_Secret", foursquare_api_client_secret
             buildConfigField 'String', "APPCENTER_API_KEY", appcenter_api_key
         }
 
