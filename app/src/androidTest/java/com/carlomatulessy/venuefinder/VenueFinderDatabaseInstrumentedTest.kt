@@ -7,9 +7,7 @@ import androidx.lifecycle.*
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.carlomatulessy.venuefinder.database.VenueFinderDatabase
-import com.carlomatulessy.venuefinder.database.VenueResult
-import com.carlomatulessy.venuefinder.database.VenueResultsDao
+import com.carlomatulessy.venuefinder.database.*
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -26,6 +24,7 @@ import org.junit.runner.RunWith
 class VenueFinderDatabaseInstrumentedTest {
     private lateinit var database: VenueFinderDatabase
     private lateinit var venueResultsDao: VenueResultsDao
+    private lateinit var venueDetailDao: VenueDetailDao
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -37,6 +36,7 @@ class VenueFinderDatabaseInstrumentedTest {
             context, VenueFinderDatabase::class.java
         ).build()
         venueResultsDao = database.venueResultsDao()
+        venueDetailDao = database.venueDetailDao()
     }
 
     @After
@@ -46,17 +46,30 @@ class VenueFinderDatabaseInstrumentedTest {
     }
 
     @Test
-    fun validateIfDataIsInsertedInDatabase() {
+    fun validateIfDataVenueResultIsInsertedInDatabase() {
         // Arrange
         val searchValue = "New York"
         val venueResult = getDummyVenueResult(searchValue)
 
         // Act
         venueResultsDao.insert(venueResult)
+        val results = venueResultsDao.getVenueResultsForSearchValue(searchValue)
 
         // Assert
-        val results = venueResultsDao.getVenueResultsForSearchValue(searchValue)
         assertEquals(venueResult, results.first())
+    }
+
+    @Test
+    fun validateIfDataVenueDetailIsInsertedInDatabase() {
+        // Arrange
+        val venueDetailResult = getDummyVenueDetailResult()
+
+        // Act
+        venueDetailDao.insert(venueDetailResult)
+        val result = venueDetailDao.getVenueDetail(venueDetailResult.id)
+
+        // Assert
+        assertEquals(venueDetailResult, result)
     }
 
     private fun getDummyVenueResult(value: String) =
@@ -69,5 +82,26 @@ class VenueFinderDatabaseInstrumentedTest {
             locationState = "NY",
             searchValue = value
         )
+
+    private fun getDummyVenueDetailResult() =
+            VenueDetailResult(
+                id = "5a187743ccad6b307315e6fe",
+                name = "Foursquare HQ",
+                description = "Foursquare helps you find places you’ll love, anywhere in the world.",
+                rating = 0.0F,
+                contactPhone = null,
+                contactTwitter = "foursquare",
+                contactInstagram = "foursquare",
+                contactFacebook = null,
+                locationCC = "US",
+                locationCity = "New York",
+                locationState = "New York",
+                formattedAddress = "50 W 23rd St, New York, NY 10010, United States",
+                photoPrefix = "https://fastly.4sqi.net/img/general/",
+                photoSuffix = "/5435652_tVudly9wn9jCMpn9N6qT54RBpyx-rc3BGWg9o4E1gOk.jpg",
+                photoWidth = 1440,
+                photoHeight = 1828,
+                photoVisibility = "public"
+            )
 }
 

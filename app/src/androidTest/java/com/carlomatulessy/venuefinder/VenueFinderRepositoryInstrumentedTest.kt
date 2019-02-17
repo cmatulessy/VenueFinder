@@ -11,6 +11,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 /**
  * Created by Carlo Matulessy on 17/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
@@ -22,7 +23,7 @@ class VenueFinderRepositoryInstrumentedTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Test
-    fun validateDataFromRepository() {
+    fun validateVenueResultsFromRepository() {
         // Arrange
         val repository = VenueRepository()
         val context = ApplicationProvider.getApplicationContext<Context>()
@@ -37,6 +38,23 @@ class VenueFinderRepositoryInstrumentedTest {
             assertEquals(10, it.size)
         }
     }
+
+    @Test
+    fun validateVenueDetailResultFromRepository() {
+        // Arrange
+        val repository = VenueRepository()
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val value = "5642aef9498e51025cf4a7a5"
+
+        // Act
+        val results = repository.getVenueDetails(context, value)
+
+        // Assert
+        results.observeOnce {
+            assertEquals(value, it.id)
+        }
+
+    }
 }
 
 fun <T> LiveData<T>.observeOnce(onChangeHandler: (T) -> Unit) {
@@ -46,6 +64,7 @@ fun <T> LiveData<T>.observeOnce(onChangeHandler: (T) -> Unit) {
 
 private class OneTimeObserver<T>(private val handler: (T) -> Unit) : Observer<T>, LifecycleOwner {
     private val lifecycle = LifecycleRegistry(this)
+
     init {
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
     }

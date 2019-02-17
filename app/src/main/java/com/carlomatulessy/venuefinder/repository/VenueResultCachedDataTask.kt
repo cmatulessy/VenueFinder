@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import com.carlomatulessy.venuefinder.database.VenueFinderDatabase
 import com.carlomatulessy.venuefinder.database.VenueResult
 import com.carlomatulessy.venuefinder.util.Extra
+import com.carlomatulessy.venuefinder.util.Extra.VENUE_FINDER_KEY
 
 /**
  * Created by Carlo Matulessy on 16/02/2019.
@@ -28,7 +29,7 @@ open class VenueResultCachedDataTask(
 
     override fun onPreExecute() {
         super.onPreExecute()
-        Log.d(Extra.VENUE_FINDER_KEY, "VenueResultCachedDataTask: Get venue results cached data for search request {$value}")
+        Log.d(VENUE_FINDER_KEY, "VenueResultCachedDataTask: Get venue results cached data for search request {$value}")
     }
 
     override fun doInBackground(vararg params: Unit?): List<VenueResult>? =

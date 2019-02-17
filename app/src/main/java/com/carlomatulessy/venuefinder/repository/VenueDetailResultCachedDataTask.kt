@@ -5,8 +5,7 @@ import android.os.AsyncTask
 import android.util.Log
 import com.carlomatulessy.venuefinder.database.VenueDetailResult
 import com.carlomatulessy.venuefinder.database.VenueFinderDatabase
-import com.carlomatulessy.venuefinder.database.VenueResult
-import com.carlomatulessy.venuefinder.util.Extra
+import com.carlomatulessy.venuefinder.util.Extra.VENUE_FINDER_KEY
 
 /**
  * Created by Carlo Matulessy on 17/02/2019.
@@ -28,10 +27,7 @@ open class VenueDetailResultCachedDataTask(
 
     override fun onPreExecute() {
         super.onPreExecute()
-        Log.d(
-            Extra.VENUE_FINDER_KEY,
-            "VenueDetailResultCachedDataTask: Get venue detail result cached data for id {$id}"
-        )
+        Log.d(VENUE_FINDER_KEY, "VenueDetailResultCachedDataTask: Get venue detail result cached data for id {$id}")
     }
 
     override fun doInBackground(vararg params: Unit?): VenueDetailResult? =
@@ -39,6 +35,8 @@ open class VenueDetailResultCachedDataTask(
 
     override fun onPostExecute(result: VenueDetailResult?) {
         super.onPostExecute(result)
+        Log.d(VENUE_FINDER_KEY, "VenueDetailResultCachedDataTask | Result: $result")
+
         result?.let {
             listener?.onObtainedResults(it)
         } ?: run {
