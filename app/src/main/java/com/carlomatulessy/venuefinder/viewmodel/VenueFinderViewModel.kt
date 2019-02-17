@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.carlomatulessy.venuefinder.database.VenueResult
-import com.carlomatulessy.venuefinder.webservice.model.Venue
 import com.carlomatulessy.venuefinder.repository.VenueRepository
 
 /**
@@ -31,7 +30,7 @@ class VenueFinderViewModel : ViewModel() {
     }
 
     fun restoreDataIfNecessary() {
-        if(::venueResultList.isInitialized)
+        if (::venueResultList.isInitialized)
             updateVenueResults(venueResultList, true)
     }
 
@@ -46,8 +45,10 @@ class VenueFinderViewModel : ViewModel() {
         venueProgress.observe(fragment, venueProgressObserver)
     }
 
-    fun getResultsFromValue(fragment: Fragment,
-                            value: String, radius: Int = 1000, limit: Int = 10) {
+    fun getResultsFromValue(
+        fragment: Fragment,
+        value: String, radius: Int = 1000, limit: Int = 10
+    ) {
         venueProgress.value = true
         fragment.context?.let { safeContext ->
             VenueRepository().getVenues(safeContext, value, radius, limit)

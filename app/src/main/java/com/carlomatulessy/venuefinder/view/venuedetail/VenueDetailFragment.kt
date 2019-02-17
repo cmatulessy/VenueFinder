@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,8 +17,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.database.VenueDetailResult
 import com.carlomatulessy.venuefinder.database.VenueResult
-import com.carlomatulessy.venuefinder.webservice.model.Contact
-import com.carlomatulessy.venuefinder.webservice.model.Venue
 import com.carlomatulessy.venuefinder.util.Extra
 import com.carlomatulessy.venuefinder.viewmodel.VenueDetailViewModel
 import com.squareup.picasso.Picasso

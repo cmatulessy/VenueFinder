@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.carlomatulessy.venuefinder.database.VenueDetailResult
 import com.carlomatulessy.venuefinder.repository.VenueRepository
-import com.carlomatulessy.venuefinder.webservice.FoursquareAPIResponse
 
 /**
  * Created by Carlo Matulessy on 16/02/2019.

@@ -7,11 +7,15 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 /**
  * Created by Carlo Matulessy on 11/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This interface represents the Foursquare service. If you want to make an HTTP request, you would likely
+ * update this class to support your request. For now we make two requests:
+ * 1) getVenueResults() -> get venue results for a specific search command
+ * 2) getVenueDetails() -> get detailed information of a venue by a given id
  */
 interface FoursquareService {
 
@@ -25,7 +29,6 @@ interface FoursquareService {
         }
     }
 
-    // TODO hide secrets + fix date
     @GET("search")
     fun getVenueResults(
         @Query("near") near: String,

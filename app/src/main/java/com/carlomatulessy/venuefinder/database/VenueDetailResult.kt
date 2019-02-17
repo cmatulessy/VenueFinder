@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey
 /**
  * Created by Carlo Matulessy on 16/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This data class is an Entity and representation of the VenueDetail table
  */
 @Entity
 data class VenueDetailResult(

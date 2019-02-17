@@ -8,12 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.database.VenueResult
-import com.carlomatulessy.venuefinder.webservice.model.Venue
 import kotlinx.android.synthetic.main.venue_list_item.view.*
 
 /**
  * Created by Carlo Matulessy on 11/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This class is responsible for populating the listview in the VenueFinderFragment.
  */
 class VenueFinderAdapter(
     private val context: Context,

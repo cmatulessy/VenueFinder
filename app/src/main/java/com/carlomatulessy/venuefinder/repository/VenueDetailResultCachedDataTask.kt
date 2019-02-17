@@ -10,6 +10,8 @@ import com.carlomatulessy.venuefinder.util.Extra.VENUE_FINDER_KEY
 /**
  * Created by Carlo Matulessy on 17/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This async task class is used to obtain the cached data related to details of a venue
  */
 open class VenueDetailResultCachedDataTask(
     context: Context,

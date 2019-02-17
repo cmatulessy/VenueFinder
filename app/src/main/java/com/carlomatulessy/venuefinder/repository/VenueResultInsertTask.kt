@@ -12,6 +12,8 @@ import com.carlomatulessy.venuefinder.webservice.model.Venue
 /**
  * Created by Carlo Matulessy on 15/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ *  Description: This async task class is used to insert a Venue result object to the database
  */
 open class VenueResultInsertTask(
     context: Context,
@@ -55,7 +57,7 @@ open class VenueResultInsertTask(
     override fun onPostExecute(results: List<VenueResult>?) {
         super.onPostExecute(results)
         results?.let {
-            Log.d(VENUE_FINDER_KEY, "Results size: "+it.size)
+            Log.d(VENUE_FINDER_KEY, "Results size: " + it.size)
             listener?.onInserted(it)
         } ?: run {
             listener?.onInsertionError()

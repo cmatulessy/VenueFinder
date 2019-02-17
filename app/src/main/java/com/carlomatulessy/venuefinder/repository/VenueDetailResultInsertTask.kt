@@ -3,7 +3,6 @@ package com.carlomatulessy.venuefinder.repository
 import android.content.Context
 import android.os.AsyncTask
 import android.util.Log
-import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.database.VenueDetailResult
 import com.carlomatulessy.venuefinder.database.VenueFinderDatabase
 import com.carlomatulessy.venuefinder.util.Extra
@@ -15,9 +14,11 @@ import com.carlomatulessy.venuefinder.webservice.model.Venue
 /**
  * Created by Carlo Matulessy on 17/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This async task class is used to insert a venue detail object to the database
  */
 open class VenueDetailResultInsertTask(
-    private val context: Context,
+    context: Context,
     private val venue: Venue,
     private val listener: InsertListener? = null
 ) : AsyncTask<Unit, Unit, VenueDetailResult?>() {
@@ -42,9 +43,7 @@ open class VenueDetailResultInsertTask(
             VenueDetailResult(
                 id = venue.id,
                 name = venue.name,
-                description =
-                    if (venue.description.isNullOrEmpty()) venue.description
-                    else context.getString(R.string.venue_detail_description_unknown),
+                description = if (venue.description.isNullOrEmpty()) venue.description else "",
                 rating = (venue.rating / 5),
                 contactPhone = venue.contact.phone,
                 contactTwitter = venue.contact.twitter,
@@ -77,19 +76,19 @@ open class VenueDetailResultInsertTask(
 
     private fun validatePhotoObjectString(photo: Photo?, field: PhotoEnum): String? {
         Log.d(VENUE_FINDER_KEY, "Photo: ${photo?.toString()}")
-       return photo?.let { safePhoto ->
-           when(field) {
-               PhotoEnum.PREFIX -> safePhoto.prefix
-               PhotoEnum.SUFFIX -> safePhoto.suffix
-               PhotoEnum.VISIBILITY -> safePhoto.visibility
-               else -> "" // We return an empty string
-           }
-       }
+        return photo?.let { safePhoto ->
+            when (field) {
+                PhotoEnum.PREFIX -> safePhoto.prefix
+                PhotoEnum.SUFFIX -> safePhoto.suffix
+                PhotoEnum.VISIBILITY -> safePhoto.visibility
+                else -> "" // We return an empty string
+            }
+        }
     }
 
     private fun validatePhotoObjectInt(photo: Photo?, field: PhotoEnum): Int? {
         return photo?.let { safePhoto ->
-            when(field) {
+            when (field) {
                 PhotoEnum.WIDTH -> safePhoto.width
                 PhotoEnum.HEIGHT -> safePhoto.height
                 else -> -1 // We return a negative value if field can't be found

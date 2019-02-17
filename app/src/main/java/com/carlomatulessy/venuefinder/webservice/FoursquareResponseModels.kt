@@ -5,6 +5,8 @@ import com.carlomatulessy.venuefinder.webservice.model.Venue
 /**
  * Created by Carlo Matulessy on 11/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: These classes representing the retrofit API responses
  */
 class FoursquareAPIResponse(val meta: FoursquareMeta, val response: FoursquareResponse)
 

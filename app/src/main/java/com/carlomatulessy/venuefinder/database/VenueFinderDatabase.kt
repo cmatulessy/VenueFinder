@@ -8,9 +8,11 @@ import androidx.room.RoomDatabase
 /**
  * Created by Carlo Matulessy on 15/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This class represents the database which is used for caching the search results of the app
  */
 @Database(entities = [VenueResult::class, VenueDetailResult::class], version = 1, exportSchema = false)
-abstract class VenueFinderDatabase: RoomDatabase() {
+abstract class VenueFinderDatabase : RoomDatabase() {
 
     abstract fun venueResultsDao(): VenueResultsDao
     abstract fun venueDetailDao(): VenueDetailDao
@@ -18,16 +20,15 @@ abstract class VenueFinderDatabase: RoomDatabase() {
     companion object {
         private var instance: VenueFinderDatabase? = null
 
-        fun getInstance(context: Context) : VenueFinderDatabase {
+        fun getInstance(context: Context): VenueFinderDatabase {
             instance?.let {
                 return it
             } ?: run {
                 synchronized(VenueFinderDatabase::class) {
-                    Room.databaseBuilder(context.applicationContext,
-                        VenueFinderDatabase::class.java, "venuefinder.db")
-                        .build().let {
-                            return it
-                        }
+                    Room.databaseBuilder(
+                        context.applicationContext,
+                        VenueFinderDatabase::class.java, "venuefinder.db"
+                    ).build().let { return it }
                 }
             }
         }

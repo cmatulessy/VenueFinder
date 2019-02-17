@@ -12,12 +12,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.carlomatulessy.venuefinder.R
 import com.carlomatulessy.venuefinder.database.VenueResult
-import com.carlomatulessy.venuefinder.webservice.model.Venue
 import com.carlomatulessy.venuefinder.view.venuedetail.VenueDetailFragment
 import com.carlomatulessy.venuefinder.viewmodel.VenueFinderViewModel
 import kotlinx.android.synthetic.main.venue_finder_fragment.*
 
-
+/**
+ * Created by Carlo Matulessy on 17/02/2019.
+ * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This class is responsible for displaying the search results of user.
+ */
 class VenueFinderFragment : Fragment() {
 
     companion object {
@@ -88,7 +92,6 @@ class VenueFinderFragment : Fragment() {
         }
     }
 
-    // TODO binding
     private fun setVisibility(value: Boolean) {
         if (value) {
             venueResultList.visibility = View.VISIBLE
@@ -98,5 +101,4 @@ class VenueFinderFragment : Fragment() {
             venueEmptyView.visibility = View.VISIBLE
         }
     }
-
 }

@@ -2,19 +2,14 @@ package com.carlomatulessy.venuefinder.repository
 
 import android.content.Context
 import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.carlomatulessy.venuefinder.database.VenueDetailResult
 import com.carlomatulessy.venuefinder.database.VenueResult
-import com.carlomatulessy.venuefinder.webservice.model.Venue
 import com.carlomatulessy.venuefinder.util.Extra.VENUE_FINDER_KEY
 import com.carlomatulessy.venuefinder.webservice.FoursquareAPIResponse
 import com.carlomatulessy.venuefinder.webservice.FoursquareService
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 

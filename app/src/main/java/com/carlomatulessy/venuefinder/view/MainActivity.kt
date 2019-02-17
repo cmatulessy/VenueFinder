@@ -6,10 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.carlomatulessy.venuefinder.view.venuefinder.VenueFinderFragment
 
-
 /**
  * Created by Carlo Matulessy on 11/02/2019.
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This is the main activity where the basic functions are handled
  */
 class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener {
 
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
     }
 
     override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount == 0) super.onBackPressed()
+        if (supportFragmentManager.backStackEntryCount == 0) super.onBackPressed()
         else supportFragmentManager.popBackStack()
     }
 
