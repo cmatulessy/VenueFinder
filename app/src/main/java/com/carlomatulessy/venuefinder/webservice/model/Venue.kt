@@ -10,6 +10,6 @@ data class Venue(
     val description: String,
     val contact: Contact,
     val location: Location,
-    val rating: Int,
+    val rating: Float,
     val bestPhoto: Photo
 )

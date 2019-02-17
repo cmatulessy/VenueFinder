@@ -5,6 +5,5 @@ package com.carlomatulessy.venuefinder.util
  * Copyright © 2019 Carlo Matulessy. All rights reserved.
  */
 //fun <String> Array<String>.format(): String {
-//    // TODO venueresultdetails
-//    return "t"
+//    return for(value: String in this) str
 //}

@@ -1,7 +1,10 @@
 package com.carlomatulessy.venuefinder.viewmodel
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.carlomatulessy.venuefinder.database.VenueDetailResult
 import com.carlomatulessy.venuefinder.repository.VenueRepository
 import com.carlomatulessy.venuefinder.webservice.FoursquareAPIResponse
 
@@ -13,6 +16,22 @@ import com.carlomatulessy.venuefinder.webservice.FoursquareAPIResponse
  */
 class VenueDetailViewModel : ViewModel() {
 
-    fun getVenueDetails(id: String): MutableLiveData<FoursquareAPIResponse> =
-        VenueRepository().getVenueDetails(id) as MutableLiveData<FoursquareAPIResponse>
+    private val venueDetails: MutableLiveData<VenueDetailResult> by lazy {
+        MutableLiveData<VenueDetailResult>()
+    }
+
+    fun setVenueDetailsObserver(
+        fragment: Fragment,
+        venueDetailResultObserver: Observer<VenueDetailResult>) {
+        venueDetails.observe(fragment, venueDetailResultObserver)
+    }
+
+    fun getVenueDetails(fragment: Fragment, id: String) {
+        fragment.context?.let{safeContext ->
+            VenueRepository().getVenueDetails(safeContext, id)
+                .observe(fragment, Observer{
+                    venueDetails.value = it
+                })
+        }
+    }
 }

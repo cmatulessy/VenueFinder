@@ -42,6 +42,4 @@ open class VenueResultCachedDataTask(
             listener?.onObtainedError()
         }
     }
-
-
 }

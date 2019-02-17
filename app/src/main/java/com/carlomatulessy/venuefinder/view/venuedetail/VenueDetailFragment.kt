@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.carlomatulessy.venuefinder.R
+import com.carlomatulessy.venuefinder.database.VenueDetailResult
 import com.carlomatulessy.venuefinder.database.VenueResult
 import com.carlomatulessy.venuefinder.webservice.model.Contact
 import com.carlomatulessy.venuefinder.webservice.model.Venue
@@ -24,7 +25,12 @@ import com.carlomatulessy.venuefinder.viewmodel.VenueDetailViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.venue_detail_fragment.*
 
-
+/**
+ * Created by Carlo Matulessy on 17/02/2019.
+ * Copyright © 2019 Carlo Matulessy. All rights reserved.
+ *
+ * Description: This class is responsible for the view of a venue detail
+ */
 class VenueDetailFragment : Fragment() {
 
     private lateinit var venueId: String
@@ -65,104 +71,55 @@ class VenueDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO big refactor here!
-        viewModel.getVenueDetails(venueId).observe(this,
-            Observer { result ->
-                result?.let { message ->
-                    if (message.meta.code == 200) {
-                        message.response?.venue?.let { safeVenue ->
-                            venueDetailTitle.text =
-                                if (safeVenue.name.isNotEmpty()) safeVenue.name else venueName
+        viewModel.setVenueDetailsObserver(this,
+            Observer { venueDetailResult ->
+                venueDetailTitle.text =
+                    if (venueDetailResult.name.isNotEmpty()) venueDetailResult.name else venueName
 
-                            venueDetailDescription.text =
-                                if (safeVenue.description.isNullOrEmpty())
-                                    getString(com.carlomatulessy.venuefinder.R.string.venue_detail_description_unknown)
-                                else
-                                    safeVenue.description
+                venueDetailDescription.text = venueDetailResult.description
+                venueDetailAddress.text = venueDetailResult.formattedAddress
+                venueDetailResult.rating?.let { venueDetailRatingBar.rating = it }
 
-                            venueDetailAddress.text = safeVenue.location.formattedAddress.joinToString(",\n")
-
-                            venueDetailRatingBar.rating = (safeVenue.rating / 5).toFloat()
-
-                            safeVenue.bestPhoto?.let {
-                                Picasso.get().load(
-                                    getString(
-                                        R.string.venue_detail_image_url,
-                                        it.prefix,
-                                        it.width,
-                                        it.height,
-                                        it.suffix
-                                    )
-                                ).into(venueDetailBestPhoto)
-                            }
-
-                            setupContactView(safeVenue.contact)
-                        }
-                    } else {
-                        showErrorMessage(message.meta.code)
-                    }
-                } ?: showErrorMessage(429)
-            })
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            Extra.REQUEST_CALL_CODE -> {
-
-            }
-        }
-    }
-
-    private fun showErrorMessage(code: Int) {
-        activity?.let { safeFragment ->
-            Toast.makeText(
-                safeFragment,
-                getString(R.string.venue_detail_connection_error, code), Toast.LENGTH_SHORT
-            )
-                .show()
-            safeFragment.onBackPressed()
-        }
-    }
-
-    private fun setupContactView(contact: Contact) {
-        venueDetailTwitterBtn.apply {
-            visibility = getVisibility(contact.twitter)
-            setOnClickListener {
-                goToUrl(
+                Picasso.get().load(
                     getString(
-                        com.carlomatulessy.venuefinder.R.string.venue_detail_twitter_prefix,
-                        contact.twitter
+                        R.string.venue_detail_image_url,
+                        venueDetailResult.photoPrefix,
+                        venueDetailResult.photoWidth,
+                        venueDetailResult.photoHeight,
+                        venueDetailResult.photoSuffix
                     )
-                )
+                ).into(venueDetailBestPhoto)
+
+                setupContactView(venueDetailResult)
+            })
+
+        viewModel.getVenueDetails(this, venueId)
+    }
+
+    private fun setupContactView(venueDetailResult: VenueDetailResult) {
+        venueDetailTwitterBtn.apply {
+            visibility = getVisibility(venueDetailResult.contactTwitter)
+            setOnClickListener {
+                goToUrl(getString(R.string.venue_detail_twitter_prefix, venueDetailResult.contactTwitter))
             }
         }
 
         venueDetailInstagramBtn.apply {
-            visibility = getVisibility(contact.instagram)
+            visibility = getVisibility(venueDetailResult.contactInstagram)
             setOnClickListener {
-                goToUrl(
-                    getString(
-                        com.carlomatulessy.venuefinder.R.string.venue_detail_instagram_prefix,
-                        contact.instagram
-                    )
-                )
+                goToUrl(getString(R.string.venue_detail_instagram_prefix, venueDetailResult.contactInstagram))
             }
         }
 
         venueDetailFacebookBtn.apply {
-            visibility = getVisibility(contact.facebook)
+            visibility = getVisibility(venueDetailResult.contactFacebook)
             setOnClickListener {
-                goToUrl(
-                    getString(
-                        com.carlomatulessy.venuefinder.R.string.venue_detail_facebook_prefix,
-                        contact.facebook
-                    )
-                )
+                goToUrl(getString(R.string.venue_detail_facebook_prefix, venueDetailResult.contactFacebook))
             }
         }
 
         venueDetailCallBtn.apply {
-            visibility = getVisibility(contact.phone)
+            visibility = getVisibility(venueDetailResult.contactPhone)
             setOnClickListener {
                 val permissionCheck = ContextCompat.checkSelfPermission(it.context, Manifest.permission.CALL_PHONE)
 
@@ -177,12 +134,7 @@ class VenueDetailFragment : Fragment() {
                 } else {
                     startActivity(
                         Intent(Intent.ACTION_CALL).setData(
-                            Uri.parse(
-                                getString(
-                                    com.carlomatulessy.venuefinder.R.string.venue_detail_call_prefix,
-                                    contact.phone
-                                )
-                            )
+                            Uri.parse(getString(R.string.venue_detail_call_prefix, venueDetailResult.contactPhone))
                         )
                     )
                 }
