@@ -121,8 +121,8 @@ class VenueRepository {
             override fun onFailure(call: Call<FoursquareAPIResponse>, t: Throwable) {
                 VenueDetailResultCachedDataTask(context, id,
                     object : VenueDetailResultCachedDataTask.ObtainCacheListener {
-                        override fun onObtainedResults(results: VenueDetailResult) {
-                            data.value = results
+                        override fun onObtainedResults(result: VenueDetailResult) {
+                            data.value = result
                         }
 
                         override fun onObtainedError() {

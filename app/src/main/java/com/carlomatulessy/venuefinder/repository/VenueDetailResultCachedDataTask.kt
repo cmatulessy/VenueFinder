@@ -20,7 +20,7 @@ open class VenueDetailResultCachedDataTask(
 ) : AsyncTask<Unit, Unit, VenueDetailResult?>() {
 
     interface ObtainCacheListener {
-        fun onObtainedResults(results: VenueDetailResult)
+        fun onObtainedResults(result: VenueDetailResult)
         fun onObtainedError() {}
     }
 
