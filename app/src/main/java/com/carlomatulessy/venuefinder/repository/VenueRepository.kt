@@ -2,8 +2,10 @@ package com.carlomatulessy.venuefinder.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.carlomatulessy.venuefinder.database.VenueResult
 import com.carlomatulessy.venuefinder.webservice.model.Venue
 import com.carlomatulessy.venuefinder.util.Extra.VENUE_FINDER_KEY
@@ -19,48 +21,57 @@ import retrofit2.Response
  */
 class VenueRepository {
 
-    fun getVenues(context: Context, value: String, radius: Int, limit: Int): LiveData<List<VenueResult>> {
-        var data = MutableLiveData<List<VenueResult>>()
+    fun getVenues(fragment: Fragment, value: String, radius: Int, limit: Int): MutableLiveData<List<VenueResult>> {
+        val data = MutableLiveData<List<VenueResult>>()
+        fragment.context?.let { safeContext ->
+            FoursquareService.instance.getVenueResults(value, radius, limit).enqueue(
+                object : Callback<FoursquareAPIResponse> {
 
-        FoursquareService.instance.getVenueResults(value, radius, limit).enqueue(
-            object : Callback<FoursquareAPIResponse> {
-                override fun onResponse(call: Call<FoursquareAPIResponse>, response: Response<FoursquareAPIResponse>) {
-                    Log.d(VENUE_FINDER_KEY, "RetroFit response code: ${response.code()}")
+                    override fun onResponse(
+                        call: Call<FoursquareAPIResponse>,
+                        response: Response<FoursquareAPIResponse>
+                    ) {
+                        Log.d(VENUE_FINDER_KEY, "RetroFit response code: ${response.code()}")
 
-                    if (response.code() == 200) {
-                        response.body()?.let { apiResponse ->
-                            VenueResultInsertTask(context, value, apiResponse,
-                                object : VenueResultInsertTask.InsertListener {
+                        if (response.code() == 200) {
+                            response.body()?.let { apiResponse ->
+                                VenueResultInsertTask(safeContext, value, apiResponse,
+                                    object : VenueResultInsertTask.InsertListener {
 
-                                    override fun onInserted(results: LiveData<List<VenueResult>>?) {
-                                        results?.let {
-                                            data.value = it.value
+                                        override fun onInserted(results: List<VenueResult>) {
+                                            data.value = results
+                                            Log.d(VENUE_FINDER_KEY, "VenueRepository: Obtain data from url")
                                         }
-                                    }
 
-                                    override fun onInsertionError() {
-                                        super.onInsertionError()
-                                        Log.e(
-                                            VENUE_FINDER_KEY,
-                                            "VenueRepository: Something went wrong with VenueResultInsertTask"
-                                        )
-                                    }
-                                }).execute()
+                                        override fun onInsertionError() {
+                                            super.onInsertionError()
+                                            Log.e(
+                                                VENUE_FINDER_KEY,
+                                                "VenueRepository: Something went wrong with VenueResultInsertTask"
+                                            )
+                                        }
+                                    }).execute()
+                            }
+                        } else {
+                            getCachedDataForVenueResults(safeContext, value).observe(fragment, Observer {
+                                data.value = it
+                            })
                         }
-                    } else {
-                        data = getCachedDataForVenueResults(context, value)
+                    }
+
+                    override fun onFailure(call: Call<FoursquareAPIResponse>, t: Throwable) {
+                        getCachedDataForVenueResults(safeContext, value).observe(fragment, Observer {
+                            data.value = it
+                        })
+
+                        Log.e(
+                            VENUE_FINDER_KEY,
+                            "VenueRepository: Something went wrong with FoursquareAPIResponse: ${t.message}"
+                        )
                     }
                 }
-
-                override fun onFailure(call: Call<FoursquareAPIResponse>, t: Throwable) {
-                    data = getCachedDataForVenueResults(context, value)
-                    Log.e(
-                        VENUE_FINDER_KEY,
-                        "VenueRepository: Something went wrong with FoursquareAPIResponse: ${t.message}"
-                    )
-                }
-            }
-        )
+            )
+        }
 
         return data
     }
@@ -85,15 +96,14 @@ class VenueRepository {
     }
 
     private fun getCachedDataForVenueResults(context: Context, value: String): MutableLiveData<List<VenueResult>> {
-        var data = MutableLiveData<List<VenueResult>>()
+        val data = MutableLiveData<List<VenueResult>>()
 
         VenueResultCachedDataTask(context, value,
             object : VenueResultCachedDataTask.ObtainCacheListener {
 
-                override fun onObtainedResults(results: LiveData<List<VenueResult>>?) {
-                    results?.let {
-                        data.value = it.value
-                    }
+                override fun onObtainedResults(results: List<VenueResult>) {
+                    data.value = results
+                    Log.d(VENUE_FINDER_KEY, "VenueRepository: Obtain data from cache")
                 }
 
                 override fun onObtainedError() {

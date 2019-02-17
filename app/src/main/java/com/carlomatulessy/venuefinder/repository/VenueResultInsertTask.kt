@@ -3,7 +3,6 @@ package com.carlomatulessy.venuefinder.repository
 import android.content.Context
 import android.os.AsyncTask
 import android.util.Log
-import androidx.lifecycle.LiveData
 import com.carlomatulessy.venuefinder.database.VenueFinderDatabase
 import com.carlomatulessy.venuefinder.database.VenueResult
 import com.carlomatulessy.venuefinder.util.Extra.VENUE_FINDER_KEY
@@ -19,10 +18,10 @@ open class VenueResultInsertTask(
     private val value: String,
     private val apiResponse: FoursquareAPIResponse,
     private val listener: InsertListener? = null
-) : AsyncTask<Unit, Unit, LiveData<List<VenueResult>>?>() {
+) : AsyncTask<Unit, Unit, List<VenueResult>?>() {
 
     interface InsertListener {
-        fun onInserted(results: LiveData<List<VenueResult>>?)
+        fun onInserted(results: List<VenueResult>)
         fun onInsertionError() {}
     }
 
@@ -34,7 +33,7 @@ open class VenueResultInsertTask(
         Log.d(VENUE_FINDER_KEY, "Inserting venue results for search request {$value}")
     }
 
-    override fun doInBackground(vararg params: Unit?): LiveData<List<VenueResult>>? {
+    override fun doInBackground(vararg params: Unit?): List<VenueResult> {
         for (venue: Venue in apiResponse.response.venues) {
             venueResultsDao.insert(
                 VenueResult(
@@ -53,10 +52,10 @@ open class VenueResultInsertTask(
         return venueResultsDao.getVenueResultsForRequestId(apiResponse.meta.requestId)
     }
 
-    override fun onPostExecute(results: LiveData<List<VenueResult>>?) {
+    override fun onPostExecute(results: List<VenueResult>?) {
         super.onPostExecute(results)
         results?.let {
-            Log.d(VENUE_FINDER_KEY, "Result: ${it.value}")
+            Log.d(VENUE_FINDER_KEY, "Results size: "+it.size)
             listener?.onInserted(it)
         } ?: run {
             listener?.onInsertionError()

@@ -16,10 +16,10 @@ open class VenueResultCachedDataTask(
     context: Context,
     private val value: String,
     private val listener: ObtainCacheListener? = null
-) : AsyncTask<Unit, Unit, LiveData<List<VenueResult>>?>() {
+) : AsyncTask<Unit, Unit, List<VenueResult>?>() {
 
     interface ObtainCacheListener {
-        fun onObtainedResults(results: LiveData<List<VenueResult>>?)
+        fun onObtainedResults(results: List<VenueResult>)
         fun onObtainedError() {}
     }
 
@@ -28,13 +28,13 @@ open class VenueResultCachedDataTask(
 
     override fun onPreExecute() {
         super.onPreExecute()
-        Log.d(Extra.VENUE_FINDER_KEY, "Get venue results cached data for search request {$value}")
+        Log.d(Extra.VENUE_FINDER_KEY, "VenueResultCachedDataTask: Get venue results cached data for search request {$value}")
     }
 
-    override fun doInBackground(vararg params: Unit?): LiveData<List<VenueResult>>? =
+    override fun doInBackground(vararg params: Unit?): List<VenueResult>? =
         venueResultsDao.getVenueResultsForSearchValue(value)
 
-    override fun onPostExecute(results: LiveData<List<VenueResult>>?) {
+    override fun onPostExecute(results: List<VenueResult>?) {
         super.onPostExecute(results)
         results?.let {
             listener?.onObtainedResults(it)

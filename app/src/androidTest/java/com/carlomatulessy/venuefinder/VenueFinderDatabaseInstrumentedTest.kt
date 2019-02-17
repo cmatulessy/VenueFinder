@@ -55,9 +55,8 @@ class VenueFinderDatabaseInstrumentedTest {
         venueResultsDao.insert(venueResult)
 
         // Assert
-        venueResultsDao.getVenueResultsForSearchValue(searchValue).observeOnce {
-            assertEquals(venueResult, it.first())
-        }
+        val results = venueResultsDao.getVenueResultsForSearchValue(searchValue)
+        assertEquals(venueResult, results.first())
     }
 
     private fun getDummyVenueResult(value: String) =
@@ -70,24 +69,5 @@ class VenueFinderDatabaseInstrumentedTest {
             locationState = "NY",
             searchValue = value
         )
-}
-
-fun <T> LiveData<T>.observeOnce(onChangeHandler: (T) -> Unit) {
-    val observer = OneTimeObserver(handler = onChangeHandler)
-    observe(observer, observer)
-}
-
-private class OneTimeObserver<T>(private val handler: (T) -> Unit) : Observer<T>, LifecycleOwner {
-    private val lifecycle = LifecycleRegistry(this)
-    init {
-        lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    }
-
-    override fun getLifecycle(): Lifecycle = lifecycle
-
-    override fun onChanged(t: T) {
-        handler(t)
-        lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    }
 }
 

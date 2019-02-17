@@ -43,15 +43,13 @@ class VenueFinderViewModel : ViewModel() {
     fun getResultsFromValue(fragment: Fragment,
                             value: String, radius: Int = 1000, limit: Int = 10) {
         venueProgress.value = true
-        fragment.context?.let { safeContext ->
-            VenueRepository().getVenues(safeContext, value, radius, limit)
-                .observe(fragment, Observer { result ->
-                    result?.let {
-                        venueResultList = result
-                        updateVenueResults(result, result.isNotEmpty())
-                    }
-                })
-        }
+        VenueRepository().getVenues(fragment, value, radius, limit)
+            .observe(fragment, Observer { results ->
+                results?.let {
+                    venueResultList = results
+                    updateVenueResults(results, results.isNotEmpty())
+                }
+            })
     }
 
     private fun updateVenueResults(results: List<VenueResult>, hasResults: Boolean) {

@@ -17,8 +17,8 @@ interface VenueResultsDao {
     fun insert(venueResult: VenueResult): Long
 
     @Query("SELECT * FROM venueResult WHERE requestId = :requestId")
-    fun getVenueResultsForRequestId(requestId: String): LiveData<List<VenueResult>>
+    fun getVenueResultsForRequestId(requestId: String): List<VenueResult>
 
     @Query("SELECT * FROM VenueResult WHERE search_value = :value")
-    fun getVenueResultsForSearchValue(value: String): LiveData<List<VenueResult>>
+    fun getVenueResultsForSearchValue(value: String): List<VenueResult>
 }
