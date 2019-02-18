@@ -9,6 +9,15 @@ This is an assessment project to demonstrate my skills in Kotlin for Android, Je
 1) VenueFinderFragment: This is the screen where the user can enter a city name
 2) VenueDetailFragment: This is the screen where the user can read detailed info about the venue they have selected.
 
+I used the following frameworks and programs in this project:
+ * Android Jetpack
+ * Room for caching
+ * Retrofit for the http requests
+ * Picasso library for loading a best photo into the venue detail view
+ * Sketch for designing icon launcher
+ * Android studio
+ * Microsoft AppCenter as CICD tool to automatically test, build and distribute to the Playstore
+
 ## Google Playstore
 You can download the showcase app in the Google playstore. Click [here](https://play.google.com/store/apps/details?id=com.carlomatulessy.venuefinder) to visit it
 
